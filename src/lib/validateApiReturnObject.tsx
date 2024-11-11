@@ -3,7 +3,7 @@ import { PatientData } from "@/components/patient/types";
 
 const defaultPatientData: PatientData = {
     basicInfo: {
-        name: "",
+        name: "Unknown Person",
         age: -1,
         patientId: "",
         roomNumber: "",
