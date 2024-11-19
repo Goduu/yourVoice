@@ -8,12 +8,17 @@ export async function POST(request: NextRequest) {
   const text = body.text
   console.log('request', body);
 
+  const token = process.env["GITHUB_TOKEN"];
+  const endpoint = "https://models.inference.ai.azure.com";
+  const modelName = "gpt-4o";
+
+
   const openai = new OpenAI(
-    { apiKey: process.env.OPENAI_API_KEY }
+    { baseURL: endpoint, apiKey: token }
   );
 
   const completion = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: modelName,
     messages: [
       {
         role: "system", content: promptText
@@ -24,8 +29,9 @@ export async function POST(request: NextRequest) {
       },
     ],
   });
-
-  return new Response(completion.choices[0].message.content);
+  console.log('xongas',completion.choices[0].message.content)
+  const aiResponse = completion.choices[0].message.content
+  return new Response(aiResponse);
   return new Response(test);
 }
 

@@ -10,7 +10,8 @@ export const transformInputIntoData = async (text: string) => {
     })
     console.log('apiResult', apiResult)
 
-    const validatedResponse = validateApiReturnObject(await apiResult.json());
+    const apiResponse = await apiResult.json();
+    const validatedResponse = validateApiReturnObject(apiResponse);
 
     console.log('validatedResponse', validatedResponse)
 

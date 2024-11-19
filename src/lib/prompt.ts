@@ -7,7 +7,7 @@ Extract patient information in the given PatientData format from the provided te
 - Maintain data structure consistency even if some details are missing.
 
 # Expected Structure
-The information should be organized in the following json format:
+The response should be given in the following format:
 
 {
     basicInfo: {
@@ -46,5 +46,8 @@ The information should be organized in the following json format:
 - Use the exact data structure and field types mentioned above.
 - If any field cannot be filled, leave it empty but keep the field included in the output.
 - If medications.lastDose was indirectly given, fill up with the date calculated based on the date of today. (2PM  given, fill with the date of today at 2pm)
+- Ensure Upper Case at the beginning of each field.
+- Ensure that the answer is given without any extra information or conclusion like \`\`\`json or so.
+- Ensure that the answer is a valid json object.
 
 `
