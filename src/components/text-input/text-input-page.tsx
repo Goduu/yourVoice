@@ -1,66 +1,82 @@
 "use client"
 import React, { FC, useState, useTransition } from 'react'
-import { Textarea } from '../ui/textarea'
-import { Button } from '../ui/button'
-import { PatientData } from '../patient/types'
-import { transformInputIntoData } from './processTextInput'
-import { useCreatePatient } from './createPatient'
-import { Spline } from 'lucide-react'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
+import { FileUpload } from './file-upload'
+import { FreeTextInput } from './free-text-input'
+import { useTextInput } from './text-input-context'
+import { useToast } from '@/hooks/use-toast'
 
 export const TextInputPage: FC = () => {
     const [text, setText] = useState('')
-    const createPatient = useCreatePatient()
     const [isPending, startTransition] = useTransition()
+    const { addEntry } = useTextInput()
+    const { toast } = useToast()
 
+    const handleAddEntry = async () => {
+        try {
+            if (!text.trim()) {
+                    toast({
+                        title: 'Error',
+                        description: `Please enter some text first`,
+                        variant: 'destructive',
+                    })
+                return
+            }
+            addEntry(text, 'free-text')
+            setText('')
+            toast({
+                title: 'Success',
+                description: 'Text added successfully',
+            })
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: `Failed to add text: ${error}`,
+                variant: 'destructive',
+            })
+        }
+    }
 
-
-    const handlePatientData = async () => {
-        // const apiResult = callApi(text)
-        const patientData = await transformInputIntoData(text)
-        createPatient(patientData)
+    const handleFileText = (fileText: string, fileName: string) => {
+        try {
+            addEntry(fileText, 'file', fileName)
+            toast({
+                title: 'Success',
+                description: 'File processed successfully',
+            })
+        } catch (error) {
+            toast({
+                title: 'Error',
+                description: `Failed to process file: ${error}`,
+                variant: 'destructive',
+            })
+        }
     }
 
     return (
-        <>
+        <div className='flex flex-col gap-4'>
             <div className='text-3xl font-bold'>
                 Data Input
             </div>
-            <div className='min-w-[360px] md:min-w-[580px] flex flex-col gap-4 items-center'>
-                <Textarea value={text} onChange={(e) => { setText(e.target.value) }} className='h-96 w-ful rounded-xl' />
-                <Button className='w-2/3 flex gap-2' onClick={() => startTransition(handlePatientData)}>
-                    {isPending && <Spline className="animate-spin h-5 w-5 mr-3 " />}
-                    Submit
-                </Button>
-            </div>
-        </>
+            <Tabs defaultValue="freeText" className="w-full">
+                <TabsList>
+                    <TabsTrigger value="freeText">Free text</TabsTrigger>
+                    <TabsTrigger value="upload">File upload</TabsTrigger>
+                </TabsList>
+                <TabsContent value="freeText">
+                    <FreeTextInput 
+                        text={text}
+                        onTextChange={setText}
+                        isPending={isPending}
+                        onSubmit={() => startTransition(handleAddEntry)}
+                    />
+                </TabsContent>
+                <TabsContent value="upload">
+                    <FileUpload 
+                        onTextLoaded={handleFileText}
+                    />
+                </TabsContent>
+            </Tabs>
+        </div>
     )
 }
-
-
-const patientData: PatientData = {
-    basicInfo: {
-        name: "Mrie Alcapaha",
-        age: 10,
-        patientId: "123456",
-        allergies: ["Peanuts", "Latex"],
-        roomNumber: "101A"
-    },
-    vitals: {
-        temperature: "37.6°C",
-        bloodPressure: "120/80",
-        heartRate: 72,
-        respiratoryRate: 16,
-        painLevel: 4,
-        painLocation: "Lower back",
-        painResponse: "Improves with rest",
-        mentalStatus: "Alert",
-    },
-    medications: [
-        { name: "Ibuprofen", lastDose: "2023-11-07T10:00", prn: true },
-        { name: "Metformin", lastDose: "2023-11-07T08:00", prn: false }
-    ],
-    shiftNotes: {
-        summary: "Patient resting, pain managed with medication.",
-        nextShift: "Monitor pain level and mobility."
-    },
-};

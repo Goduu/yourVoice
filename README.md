@@ -1,6 +1,6 @@
-# Health Note
+# Voice Tone
 
-An simple application to make quick patient reports and notes.
+An simple application to make quick voice tone recognition and analysis.
 
 # Stack
 - React
@@ -11,7 +11,4 @@ An simple application to make quick patient reports and notes.
 - GraphQL
 - Neo4j
 
-# Concept
-
-![concept image defining how to app works](https://github.com/Goduu/healthNote/blob/main/healthNote.png?raw=true)
-
+![cover](https://github.com/Goduu/yourVoice/blob/main/cover.png?raw=true)

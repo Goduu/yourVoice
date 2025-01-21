@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from '../ui/navigation-menu'
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from '../ui/navigation-menu'
 
 export const PageMenu = () => {
   return (
@@ -24,12 +24,18 @@ const menuItems: { title: string; href: string; description: string }[] = [
     title: "Input",
     href: "/text-input",
     description:
-      "Page for inputting new patient data",
+      "Page for inputting new text data",
   },
   {
-    title: "Patient Data",
-    href: "/patient-data",
+    title: "Signature Cards",
+    href: "/signature-cards",
     description:
-      "Patient data is a collection of information about a patient.",
+      "Signature cards are a collection of information about a voice tone signature.",
+  },
+  {
+    title: "Generated Texts",
+    href: "/generated-texts",
+    description:
+      "Generated texts",
   },
 ]
